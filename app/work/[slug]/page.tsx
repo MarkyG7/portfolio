@@ -3,17 +3,22 @@ import Link from "next/link";
 import { getAllProjects, getProjectBySlug } from "@/lib/projects";
 import { urlFor } from "@/lib/sanity.image";
 
-export default async function ProjectPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const project = await getProjectBySlug(params.slug);
+type PageProps = {
+  params: Promise<{ slug: string }>;
+};
+
+export default async function ProjectPage({ params }: PageProps) {
+  const { slug } = await params;
+
+  const project = await getProjectBySlug(slug);
   if (!project) return notFound();
 
   const all = await getAllProjects();
   const idx = all.findIndex((p) => p.slug === project.slug);
-  const next = all[(idx + 1) % all.length];
+
+  // Fallback in case the current project isn't found for any reason
+  const safeIdx = idx === -1 ? 0 : idx;
+  const next = all[(safeIdx + 1) % all.length];
 
   return (
     <main className="bg-white">
@@ -22,7 +27,7 @@ export default async function ProjectPage({
           href="/work"
           className="text-sm font-medium text-zinc-700 hover:text-zinc-900 transition-colors"
         >
-          ← Project List
+          ← Back to work
         </Link>
       </div>
 
@@ -51,7 +56,6 @@ export default async function ProjectPage({
           </div>
         )}
 
-        {/* Brief - Full Width */}
         <div className="mt-12">
           <div className="rounded-[32px] border border-zinc-200 bg-white p-10 shadow-[0_25px_70px_rgba(0,0,0,0.10)]">
             <p className="text-sm font-medium text-zinc-500">Brief</p>
@@ -61,7 +65,6 @@ export default async function ProjectPage({
           </div>
         </div>
 
-        {/* Style + Features */}
         <div className="mt-8 grid gap-6 lg:grid-cols-2">
           <div className="rounded-[28px] border border-zinc-200 bg-white p-8 shadow-[0_25px_70px_rgba(0,0,0,0.10)]">
             <p className="text-sm font-medium text-zinc-500">Style</p>
