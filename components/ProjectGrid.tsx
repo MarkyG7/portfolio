@@ -1,5 +1,6 @@
 "use client";
 
+import type { Project } from "@/types/project";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { urlFor } from "@/lib/sanity.image";
@@ -40,7 +41,7 @@ export default function ProjectGrid({ projects }: { projects: Project[] }) {
                         ? urlFor(p.collage[0]).width(1600).quality(90).url()
                         : ""
                     }
-                    alt=""
+                    alt={p.title ? `${p.title} preview` : "Project preview"}
                     className="h-full w-full object-cover"
                     whileHover={{ scale: 1.08 }}
                     transition={{ type: "spring", stiffness: 200, damping: 16 }}
@@ -52,6 +53,7 @@ export default function ProjectGrid({ projects }: { projects: Project[] }) {
                     <h2 className="text-xl font-semibold tracking-tight">
                       {p.title}
                     </h2>
+
                     <motion.span
                       className="text-zinc-400"
                       initial={{ x: 0 }}
@@ -61,6 +63,7 @@ export default function ProjectGrid({ projects }: { projects: Project[] }) {
                         stiffness: 260,
                         damping: 16,
                       }}
+                      aria-hidden
                     >
                       →
                     </motion.span>
