@@ -7,21 +7,26 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
+type ProjectListItem = {
+  slug: string;
+  title: string;
+};
+
 export default async function ProjectPage({ params }: PageProps) {
   const { slug } = await params;
 
   const project = await getProjectBySlug(slug);
   if (!project) return notFound();
 
-  const all = await getAllProjects();
-  const idx = all.findIndex((p) => p.slug === project.slug);
+  const all = (await getAllProjects()) as ProjectListItem[];
 
-  // Fallback in case the current project isn't found for any reason
+  const idx = all.findIndex((p: ProjectListItem) => p.slug === project.slug);
   const safeIdx = idx === -1 ? 0 : idx;
   const next = all[(safeIdx + 1) % all.length];
 
   return (
     <main className="bg-white">
+      {/* Back to work */}
       <div className="mx-auto max-w-6xl px-6 py-10">
         <Link
           href="/work"
@@ -31,6 +36,7 @@ export default async function ProjectPage({ params }: PageProps) {
         </Link>
       </div>
 
+      {/* Header */}
       <header className="mx-auto max-w-6xl px-6 pb-14">
         <h1 className="text-5xl font-semibold tracking-tight sm:text-6xl">
           {project.title}
@@ -56,6 +62,7 @@ export default async function ProjectPage({ params }: PageProps) {
           </div>
         )}
 
+        {/* Brief */}
         <div className="mt-12">
           <div className="rounded-[32px] border border-zinc-200 bg-white p-10 shadow-[0_25px_70px_rgba(0,0,0,0.10)]">
             <p className="text-sm font-medium text-zinc-500">Brief</p>
@@ -65,6 +72,7 @@ export default async function ProjectPage({ params }: PageProps) {
           </div>
         </div>
 
+        {/* Style + Features */}
         <div className="mt-8 grid gap-6 lg:grid-cols-2">
           <div className="rounded-[28px] border border-zinc-200 bg-white p-8 shadow-[0_25px_70px_rgba(0,0,0,0.10)]">
             <p className="text-sm font-medium text-zinc-500">Style</p>
@@ -87,6 +95,7 @@ export default async function ProjectPage({ params }: PageProps) {
         </div>
       </header>
 
+      {/* Gallery + Reflection + Next */}
       <section className="mx-auto max-w-6xl px-6 pb-24">
         <div className="grid gap-6">
           {project.gallery?.map((img: any, i: number) => (
@@ -130,7 +139,7 @@ export default async function ProjectPage({ params }: PageProps) {
           </Link>
         </div>
 
-        {/* Same subtle, borderless footer "Home" link as the work page */}
+        {/* Subtle borderless Home footer */}
         <footer className="mt-24 pb-4">
           <Link
             href="/"
