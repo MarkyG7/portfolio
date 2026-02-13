@@ -1,5 +1,6 @@
 "use client";
 
+import type { Project } from "@/types/project";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import clsx from "clsx";
@@ -18,8 +19,18 @@ export default function ProjectChapter({
   return (
     <section className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-6">
-        <div className={clsx("grid items-center gap-10 lg:gap-14", "lg:grid-cols-12")}>
-          <div className={clsx("lg:col-span-5", flip ? "lg:order-2" : "lg:order-1")}>
+        <div
+          className={clsx(
+            "grid items-center gap-10 lg:gap-14",
+            "lg:grid-cols-12"
+          )}
+        >
+          <div
+            className={clsx(
+              "lg:col-span-5",
+              flip ? "lg:order-2" : "lg:order-1"
+            )}
+          >
             <Reveal>
               <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">
                 {project.title}
@@ -30,16 +41,21 @@ export default function ProjectChapter({
               </p>
 
               <div className="mt-8">
-                <Link href={`/work/${project.slug}`} className="group inline-flex items-center gap-3 text-base font-medium">
+                <Link
+                  href={`/work/${project.slug}`}
+                  className="group inline-flex items-center gap-3 text-base font-medium"
+                >
                   <span className="relative">
                     View project
                     <span className="absolute -bottom-1 left-0 h-[2px] w-full origin-left scale-x-0 bg-zinc-900 transition group-hover:scale-x-100" />
                   </span>
+
                   <motion.span
                     className="inline-block"
                     initial={{ x: 0 }}
                     whileHover={{ x: 6 }}
                     transition={{ type: "spring", stiffness: 260, damping: 16 }}
+                    aria-hidden
                   >
                     →
                   </motion.span>
@@ -48,7 +64,12 @@ export default function ProjectChapter({
             </Reveal>
           </div>
 
-          <div className={clsx("lg:col-span-7", flip ? "lg:order-1" : "lg:order-2")}>
+          <div
+            className={clsx(
+              "lg:col-span-7",
+              flip ? "lg:order-1" : "lg:order-2"
+            )}
+          >
             <motion.div
               className="relative aspect-[16/10] w-full"
               initial={{ opacity: 0, y: 24 }}
@@ -65,8 +86,15 @@ export default function ProjectChapter({
                   <div className="grid h-full grid-cols-12 gap-3">
                     <div className="col-span-7 overflow-hidden rounded-2xl border border-zinc-200">
                       <motion.img
-                        src={project.collage?.[0] ? urlFor(project.collage[0]).width(1600).quality(90).url() : ""}
-                        alt=""
+                        src={
+                          project.collage?.[0]
+                            ? urlFor(project.collage[0])
+                                .width(1600)
+                                .quality(90)
+                                .url()
+                            : ""
+                        }
+                        alt={project.title ? `${project.title} preview` : "Project preview"}
                         className="h-full w-full object-cover"
                         whileHover={{ scale: 1.06 }}
                         transition={{ type: "spring", stiffness: 200, damping: 16 }}
@@ -76,8 +104,15 @@ export default function ProjectChapter({
                     <div className="col-span-5 grid grid-rows-2 gap-3">
                       <div className="overflow-hidden rounded-2xl border border-zinc-200">
                         <motion.img
-                          src={project.collage?.[1] ? urlFor(project.collage[1]).width(1200).quality(90).url() : ""}
-                          alt=""
+                          src={
+                            project.collage?.[1]
+                              ? urlFor(project.collage[1])
+                                  .width(1200)
+                                  .quality(90)
+                                  .url()
+                              : ""
+                          }
+                          alt={project.title ? `${project.title} preview` : "Project preview"}
                           className="h-full w-full object-cover"
                           whileHover={{ scale: 1.06 }}
                           transition={{ type: "spring", stiffness: 200, damping: 16 }}
@@ -86,8 +121,15 @@ export default function ProjectChapter({
 
                       <div className="overflow-hidden rounded-2xl border border-zinc-200">
                         <motion.img
-                          src={project.collage?.[2] ? urlFor(project.collage[2]).width(1200).quality(90).url() : ""}
-                          alt=""
+                          src={
+                            project.collage?.[2]
+                              ? urlFor(project.collage[2])
+                                  .width(1200)
+                                  .quality(90)
+                                  .url()
+                              : ""
+                          }
+                          alt={project.title ? `${project.title} preview` : "Project preview"}
                           className="h-full w-full object-cover"
                           whileHover={{ scale: 1.06 }}
                           transition={{ type: "spring", stiffness: 200, damping: 16 }}
